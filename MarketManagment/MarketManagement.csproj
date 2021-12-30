@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E57FFB4F-F6A4-42D0-854D-17982BD30BF0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MarketManagment</RootNamespace>
+    <AssemblyName>MarketManagment</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.115.5, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ProductForms\Popups\AddProductPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductForms\Popups\AddProductPopupForm.Designer.cs">
+      <DependentUpon>AddProductPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleForms\Popups\AddShortcutButtonPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaleForms\Popups\AddShortcutButtonPopupForm.Designer.cs">
+      <DependentUpon>AddShortcutButtonPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleForms\Popups\AskAmountPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaleForms\Popups\AskAmountPopupForm.Designer.cs">
+      <DependentUpon>AskAmountPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleForms\Popups\AskWeightPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaleForms\Popups\AskWeightPopupForm.Designer.cs">
+      <DependentUpon>AskWeightPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main\DBHelper.cs" />
+    <Compile Include="ProductForms\Popups\DeleteProductPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductForms\Popups\DeleteProductPopupForm.Designer.cs">
+      <DependentUpon>DeleteProductPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductForms\Product.cs" />
+    <Compile Include="ProductForms\ProductsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductForms\ProductsForm.Designer.cs">
+      <DependentUpon>ProductsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main\Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaleForms\Popups\CashSalePopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaleForms\Popups\CashSalePopupForm.Designer.cs">
+      <DependentUpon>CashSalePopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleForms\Popups\RemoveFromListAmountPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaleForms\Popups\RemoveFromListAmountPopupForm.Designer.cs">
+      <DependentUpon>RemoveFromListAmountPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleForms\Popups\RemoveFromListWeightPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaleForms\Popups\RemoveFromListWeightPopupForm.Designer.cs">
+      <DependentUpon>RemoveFromListWeightPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleForms\Popups\RemoveShortcutButtonPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaleForms\Popups\RemoveShortcutButtonPopupForm.Designer.cs">
+      <DependentUpon>RemoveShortcutButtonPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleForms\SaleConfirmXmlHelper.cs" />
+    <Compile Include="SaleForms\SaleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaleForms\SaleForm.Designer.cs">
+      <DependentUpon>SaleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductForms\Popups\UpdateProductPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductForms\Popups\UpdateProductPopupForm.Designer.cs">
+      <DependentUpon>UpdateProductPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SaleForms\ShortcutButtonXmlHelper.cs" />
+    <EmbeddedResource Include="ProductForms\Popups\AddProductPopupForm.resx">
+      <DependentUpon>AddProductPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleForms\Popups\AddShortcutButtonPopupForm.resx">
+      <DependentUpon>AddShortcutButtonPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleForms\Popups\AskAmountPopupForm.resx">
+      <DependentUpon>AskAmountPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleForms\Popups\AskWeightPopupForm.resx">
+      <DependentUpon>AskWeightPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductForms\Popups\DeleteProductPopupForm.resx">
+      <DependentUpon>DeleteProductPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductForms\ProductsForm.resx">
+      <DependentUpon>ProductsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="SaleForms\Popups\CashSalePopupForm.resx">
+      <DependentUpon>CashSalePopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleForms\Popups\RemoveFromListAmountPopupForm.resx">
+      <DependentUpon>RemoveFromListAmountPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleForms\Popups\RemoveFromListWeightPopupForm.resx">
+      <DependentUpon>RemoveFromListWeightPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleForms\Popups\RemoveShortcutButtonPopupForm.resx">
+      <DependentUpon>RemoveShortcutButtonPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SaleForms\SaleForm.resx">
+      <DependentUpon>SaleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductForms\Popups\UpdateProductPopupForm.resx">
+      <DependentUpon>UpdateProductPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+  </Target>
+</Project>
