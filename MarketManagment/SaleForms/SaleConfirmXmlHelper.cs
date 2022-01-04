@@ -7,12 +7,13 @@ using System.IO;
 using System.Xml;
 using System.Windows.Forms;
 
-namespace MarketManagment.SaleForms
+namespace MarketManagement.SaleForms
 {
     class SaleConfirmXmlHelper
     {
-        public static string _filePath = Application.StartupPath + "SaleSummary\\SaleSummary.xml";
-        public static string _folder = Application.StartupPath + "SaleSummary";
+        public static DirectoryInfo dir = Directory.GetParent(Application.UserAppDataPath);
+        public static string _filePath = Path.Combine(dir.FullName, "Günlük Satış Özeti\\DailySaleSummary.xml");
+        public static string _folder = Path.Combine(dir.FullName, "Günlük Satış Özeti");
 
         public static void CreateXml()
         {
@@ -20,11 +21,11 @@ namespace MarketManagment.SaleForms
 
             // create root
             XmlDocument doc = new XmlDocument();
-            XmlElement root = doc.CreateElement("SaleSummaries");
+            XmlElement root = doc.CreateElement("DailySaleSummary");
             doc.AppendChild(root);
 
             XmlElement dailySale = doc.CreateElement("DailySale");
-            dailySale.InnerText = "0";
+            dailySale.InnerText = "0.00";
             root.AppendChild(dailySale);
 
             // save the xml
@@ -37,12 +38,12 @@ namespace MarketManagment.SaleForms
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(_filePath);
-            XmlNode dailySale = doc.SelectSingleNode("SaleSummaries/DailySale");
+            XmlNode dailySale = doc.SelectSingleNode("DailySaleSummary/DailySale");
 
             double containingAmount = double.Parse(dailySale.InnerText);
             containingAmount += amount;
 
-            dailySale.InnerText = containingAmount.ToString();
+            dailySale.InnerText = containingAmount.ToString("#.00");
             doc.Save(_filePath);
         }
 
@@ -50,9 +51,9 @@ namespace MarketManagment.SaleForms
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(_filePath);
-            XmlNode dailySale = doc.SelectSingleNode("SaleSummaries/DailySale");
+            XmlNode dailySale = doc.SelectSingleNode("DailySaleSummary/DailySale");
 
-            dailySale.InnerText = "0";
+            dailySale.InnerText = "0.00";
             doc.Save(_filePath);
         }
     
@@ -60,7 +61,7 @@ namespace MarketManagment.SaleForms
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(_filePath);
-            XmlNode dailySale = doc.SelectSingleNode("SaleSummaries/DailySale");
+            XmlNode dailySale = doc.SelectSingleNode("DailySaleSummary/DailySale");
 
             return dailySale.InnerText;
         }

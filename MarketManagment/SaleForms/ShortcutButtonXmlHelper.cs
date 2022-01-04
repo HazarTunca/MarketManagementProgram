@@ -7,12 +7,13 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 
-namespace MarketManagment.SaleForms
+namespace MarketManagement.SaleForms
 {
     class ShortcutButtonXmlHelper
     {
-        private static string _filePath = Application.StartupPath + "ShortcutButtons\\ShortcutButtons.xml";
-        private static string _folder = Application.StartupPath + "ShortcutButtons";
+        public static DirectoryInfo dir = Directory.GetParent(Application.UserAppDataPath);
+        private static string _filePath = Path.Combine(dir.FullName, "Hızlı Satış Butonları\\FastSaleButtons.xml");
+        private static string _folder = Path.Combine(dir.FullName, "Hızlı Satış Butonları");
 
         public static void CreateXml()
         {

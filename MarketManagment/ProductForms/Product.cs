@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarketManagment.ProductForms
+namespace MarketManagement.ProductForms
 {
     using Main;
 
@@ -27,7 +27,7 @@ namespace MarketManagment.ProductForms
         public Product(int barcode)
         {
             _productBarcode = barcode;
-            _isWeight = DBHelper.ProductIsWeight(barcode);
+            _isWeight = DBHelper.GetProductIsWeight(barcode);
             _productName = DBHelper.GetProductName(barcode);
             _productPrice = DBHelper.GetProductPrice(barcode);
         }

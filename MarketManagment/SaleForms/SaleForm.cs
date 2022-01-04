@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace MarketManagment.SaleForms
+namespace MarketManagement.SaleForms
 {
     using Main;
     using Popups;
@@ -61,14 +61,16 @@ namespace MarketManagment.SaleForms
 
             Product product = null;
             if (isExists) product = productList[ix];
-            else product = new Product(barcode);
-            productList.Add(product);
+            else
+            {
+                product = new Product(barcode);
+                productList.Add(product);
+            }
 
             // setup product amount and price
             product.ProductAmount += amount;
             double productPrice = amount * product.ProductPrice;
             double totalProductPrice = product.ProductAmount * product.ProductPrice;
-            totalProductPrice = Math.Round(totalProductPrice, 2);
 
             // find the item in list
             ListViewItem item = null;
@@ -85,9 +87,10 @@ namespace MarketManagment.SaleForms
             if (item == null)
             {
                 item = new ListViewItem(barcode.ToString());
+
                 // sub item order -> name, price, amount
                 item.SubItems.Add(product.ProductName);
-                item.SubItems.Add($"{totalProductPrice} ₺ ({product.ProductPrice} ₺)");
+                item.SubItems.Add($"{totalProductPrice.ToString("#.00")} ₺ ({product.ProductPrice.ToString("#.00")} ₺)");
                 item.SubItems.Add($"x{product.ProductAmount} adet");
                 lv_ProductsList.Items.Add(item);
             }
@@ -96,15 +99,16 @@ namespace MarketManagment.SaleForms
             {
                 item.SubItems.Clear();
                 item.Text = barcode.ToString();
+
+                // sub item order -> name, price, amount
                 item.SubItems.Add(product.ProductName);
-                item.SubItems.Add($"{totalProductPrice} ₺ ({product.ProductPrice} ₺)");
+                item.SubItems.Add($"{totalProductPrice.ToString("#.00")} ₺ ({product.ProductPrice.ToString("#.00")} ₺)");
                 item.SubItems.Add($"x{product.ProductAmount} adet");
             }
 
             // set the total price
             _totalPrice += productPrice;
-            _totalPrice = Math.Round(_totalPrice, 2);
-            lbl_TotalPrice.Text = $"{_totalPrice} ₺";
+            lbl_TotalPrice.Text = $"{_totalPrice.ToString("0.00")} ₺";
 
             // set the tb_Barcode
             tb_Barcode.Clear();
@@ -121,23 +125,22 @@ namespace MarketManagment.SaleForms
                     isExists = true;
                     ix = i;
 
-                    System.Diagnostics.Debug.WriteLine(barcode);
-                    System.Diagnostics.Debug.WriteLine(ix);
-
                     break;
                 }
             }
 
             Product product = null;
             if (isExists) product = productList[ix];
-            else product = new Product(barcode);
-            productList.Add(product);
+            else
+            {
+                product = new Product(barcode);
+                productList.Add(product);
+            }
 
             // setup product weight and price
             product.ProductWeight += weight;
             double addingPrice = (weight * product.ProductPrice) / 1000;
             double totalPrice = (product.ProductWeight * product.ProductPrice) / 1000;
-            totalPrice = Math.Round(totalPrice, 2);
 
             // find the item in list
             ListViewItem item = null;
@@ -154,10 +157,15 @@ namespace MarketManagment.SaleForms
             if (item == null)
             {
                 item = new ListViewItem(barcode.ToString());
+
                 // sub item order -> name, price, amount
                 item.SubItems.Add(product.ProductName);
-                item.SubItems.Add($"{totalPrice} ₺ ({product.ProductPrice} ₺)");
-                item.SubItems.Add($"{product.ProductWeight} gram");
+                item.SubItems.Add($"{totalPrice.ToString("#.00")} ₺ ({product.ProductPrice.ToString("#.00")} ₺)");
+
+                // is product weight have decimal point
+                if (product.ProductWeight % 1 == 0) item.SubItems.Add($"{product.ProductWeight} gram");
+                else item.SubItems.Add($"{product.ProductWeight.ToString("#.00")} gram");
+
                 lv_ProductsList.Items.Add(item);
             }
             // if find than set the existing one
@@ -165,15 +173,19 @@ namespace MarketManagment.SaleForms
             {
                 item.SubItems.Clear();
                 item.Text = barcode.ToString();
+
+                // sub item order -> name, price, amount
                 item.SubItems.Add(product.ProductName);
-                item.SubItems.Add($"{totalPrice} ₺ ({product.ProductPrice} ₺)");
-                item.SubItems.Add($"{product.ProductWeight} gram");
+                item.SubItems.Add($"{totalPrice.ToString("#.00")} ₺ ({product.ProductPrice.ToString("#.00")} ₺)");
+
+                // is product weight have decimal point
+                if (product.ProductWeight % 1 == 0) item.SubItems.Add($"{product.ProductWeight} gram");
+                else item.SubItems.Add($"{product.ProductWeight.ToString("#.00")} gram");
             }
 
             // set the total price
             _totalPrice += addingPrice;
-            _totalPrice = Math.Round(_totalPrice, 2);
-            lbl_TotalPrice.Text = $"{_totalPrice} ₺";
+            lbl_TotalPrice.Text = $"{_totalPrice.ToString("0.00")} ₺";
 
             // set the tb_Barcode
             tb_Barcode.Clear();
@@ -231,12 +243,12 @@ namespace MarketManagment.SaleForms
                 item.SubItems.Clear();
                 item.Text = barcode.ToString();
                 item.SubItems.Add(product.ProductName);
-                item.SubItems.Add($"{restPrice} ₺ ({product.ProductPrice} ₺)");
+                item.SubItems.Add($"{restPrice.ToString("#.00")} ₺ ({product.ProductPrice.ToString("#.00")} ₺)");
                 item.SubItems.Add($"x{product.ProductAmount}");
             }
 
             _totalPrice -= removingPrice;
-            lbl_TotalPrice.Text = _totalPrice.ToString();
+            lbl_TotalPrice.Text = $"{_totalPrice.ToString("0.00")} ₺";
         }
         public void RemoveProductFromList(int barcode, double weight)
         {
@@ -289,12 +301,15 @@ namespace MarketManagment.SaleForms
                 item.SubItems.Clear();
                 item.Text = barcode.ToString();
                 item.SubItems.Add(product.ProductName);
-                item.SubItems.Add($"{restPrice} ₺ ({product.ProductPrice} ₺)");
-                item.SubItems.Add($"{product.ProductWeight} gram");
+                item.SubItems.Add($"{restPrice.ToString("#.00")} ₺ ({product.ProductPrice.ToString("#.00")} ₺)");
+
+                // is product weight have decimal point
+                if (product.ProductWeight % 1 == 0) item.SubItems.Add($"{product.ProductWeight} gram");
+                else item.SubItems.Add($"{product.ProductWeight.ToString("#.00")} gram");
             }
 
             _totalPrice -= removingPrice;
-            lbl_TotalPrice.Text = _totalPrice.ToString();
+            lbl_TotalPrice.Text = $"{_totalPrice.ToString("0.00")} ₺";
         }
 
         // if press enter automaticly add item to list
@@ -306,7 +321,7 @@ namespace MarketManagment.SaleForms
             }
 
             // if didn't press enter or barcode tb is empty
-            if (e.KeyChar != (char)Keys.Enter || String.IsNullOrEmpty(tb_Barcode.Text))
+            if (e.KeyChar != (char)Keys.Enter || string.IsNullOrEmpty(tb_Barcode.Text))
             {
                 return;
             }
@@ -318,7 +333,7 @@ namespace MarketManagment.SaleForms
                 return;
             }
 
-            if (DBHelper.ProductIsWeight(barcode))
+            if (DBHelper.GetProductIsWeight(barcode))
             {
                 // create new popup for asking weight
                 AskWeightPopupForm popupForm = new AskWeightPopupForm(this, barcode);
@@ -480,7 +495,7 @@ namespace MarketManagment.SaleForms
             }
 
             // if can get the barcode than add product to the list
-            if (DBHelper.ProductIsWeight(barcode))
+            if (DBHelper.GetProductIsWeight(barcode))
             {
                 // create new popup for asking weight
                 AskWeightPopupForm popupForm = new AskWeightPopupForm(this, barcode);
@@ -534,6 +549,8 @@ namespace MarketManagment.SaleForms
                 RemoveFromListAmountPopupForm newPopup = new RemoveFromListAmountPopupForm(this, itemBarcode, product.ProductName, product.ProductAmount);
                 newPopup.ShowDialog(this);
             }
+
+            tb_Barcode.Focus();
         }
 
         private Product FindProductInList(int barcode)

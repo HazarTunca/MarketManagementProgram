@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarketManagment.SaleForms.Popups
+namespace MarketManagement.SaleForms.Popups
 {
     public partial class CashSalePopupForm : Form
     {
@@ -61,12 +61,44 @@ namespace MarketManagment.SaleForms.Popups
             {
                 e.Handled = true;
             }
+
+            // only allow 2 decimal
+            int cursorPosLeft = tb_Price.SelectionStart;
+            int cursorPosRight = tb_Price.SelectionStart + tb_Price.SelectionLength;
+            string result = tb_Price.Text.Substring(0, cursorPosLeft) + e.KeyChar + tb_Price.Text.Substring(cursorPosRight);
+
+            if (result.Contains("."))
+            {
+                string[] parts = result.Split('.');
+                if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+                {
+                    if (parts[1].Length > 2 || parts.Length > 2)
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
+            else if (result.Contains(","))
+            {
+                string[] parts = result.Split(',');
+                if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+                {
+                    if (parts[1].Length > 2 || parts.Length > 2)
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         private void tb_Price_KeyUp(object sender, KeyEventArgs e)
         {
             if (string.IsNullOrEmpty(tb_Price.Text)) _price = 0;
-            else _price = double.Parse(tb_Price.Text);
+            else
+            {
+                string convertingString = tb_Price.Text.Replace('.', ',');
+                _price = double.Parse(convertingString);
+            }
 
             if (_price > _takenMoney)
             {
@@ -96,12 +128,30 @@ namespace MarketManagment.SaleForms.Popups
             {
                 e.Handled = true;
             }
+
+            // only allow 2 decimal
+            int cursorPosLeft = tb_TakenMoney.SelectionStart;
+            int cursorPosRight = tb_TakenMoney.SelectionStart + tb_TakenMoney.SelectionLength;
+            string result = tb_TakenMoney.Text.Substring(0, cursorPosLeft) + e.KeyChar + tb_TakenMoney.Text.Substring(cursorPosRight);
+            result.Replace(',', '.');
+            string[] parts = result.Split('.');
+            if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+            {
+                if (parts[1].Length > 2 || parts.Length > 2)
+                {
+                    e.Handled = true;
+                }
+            }
         }
 
         private void tb_TakenMoney_KeyUp(object sender, KeyEventArgs e)
         {
             if (string.IsNullOrEmpty(tb_TakenMoney.Text)) _takenMoney = 0;
-            else _takenMoney = double.Parse(tb_TakenMoney.Text);
+            else
+            {
+                string convertingString = tb_TakenMoney.Text.Replace('.', ',');
+                _takenMoney = double.Parse(convertingString);
+            }
 
             if (_price > _takenMoney)
             {
@@ -112,7 +162,5 @@ namespace MarketManagment.SaleForms.Popups
                 lbl_Change.Text = $"Para üstü: {_takenMoney - _price}₺";
             }
         }
-
-        
     }
 }

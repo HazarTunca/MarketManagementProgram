@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarketManagment.ProductForms.Popups
+namespace MarketManagement.ProductForms.Popups
 {
     using Main;
 

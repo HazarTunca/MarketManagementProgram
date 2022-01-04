@@ -1,5 +1,5 @@
 ﻿
-namespace MarketManagment.SaleForms
+namespace MarketManagement.SaleForms
 {
     partial class SaleForm
     {
@@ -121,9 +121,9 @@ namespace MarketManagment.SaleForms
             this.lbl_TotalPrice.AutoSize = true;
             this.lbl_TotalPrice.Location = new System.Drawing.Point(85, 313);
             this.lbl_TotalPrice.Name = "lbl_TotalPrice";
-            this.lbl_TotalPrice.Size = new System.Drawing.Size(22, 13);
+            this.lbl_TotalPrice.Size = new System.Drawing.Size(37, 13);
             this.lbl_TotalPrice.TabIndex = 0;
-            this.lbl_TotalPrice.Text = "0 ₺";
+            this.lbl_TotalPrice.Text = "0.00 ₺";
             // 
             // label1
             // 

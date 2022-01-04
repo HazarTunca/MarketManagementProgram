@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarketManagment.ProductForms.Popups
+namespace MarketManagement.ProductForms.Popups
 {
     using Main;
 
     public partial class UpdateProductPopupForm : Form
     {
         private ProductsForm _productsFrom;
+        private int _checkedBarcode;
 
         public UpdateProductPopupForm(ProductsForm productsForm)
         {
@@ -22,6 +23,19 @@ namespace MarketManagment.ProductForms.Popups
             CenterToScreen();
 
             _productsFrom = productsForm;
+        }
+        public UpdateProductPopupForm(ProductsForm productsForm, int barcode, string name, double salePrice, double buyPrice, bool isWeight)
+        {
+            InitializeComponent();
+            CenterToScreen();
+
+            _productsFrom = productsForm;
+
+            tb_Barcode.Text = barcode.ToString();
+            tb_Name.Text = name;
+            tb_SalePrice.Text = salePrice.ToString();
+            tb_BuyPrice.Text = buyPrice.ToString();
+            cb_IsWeight.Checked = isWeight;
         }
 
         private void btn_Confirm_Click(object sender, EventArgs e)
@@ -49,7 +63,7 @@ namespace MarketManagment.ProductForms.Popups
             double buyPrice = double.Parse(tb_BuyPrice.Text);
             double salePrice = double.Parse(tb_SalePrice.Text);
 
-            DBHelper.UpdateData(barcode, tb_Name.Text, salePrice, buyPrice, cb_IsWeight.Checked);
+            DBHelper.UpdateData(barcode, tb_Name.Text, buyPrice, salePrice, cb_IsWeight.Checked);
             _productsFrom.RefreshGridView();
             this.Close();
         }
@@ -78,6 +92,34 @@ namespace MarketManagment.ProductForms.Popups
             {
                 e.Handled = true;
             }
+
+            // only allow 2 decimal
+            int cursorPosLeft = tb_BuyPrice.SelectionStart;
+            int cursorPosRight = tb_BuyPrice.SelectionStart + tb_BuyPrice.SelectionLength;
+            string result = tb_BuyPrice.Text.Substring(0, cursorPosLeft) + e.KeyChar + tb_BuyPrice.Text.Substring(cursorPosRight);
+
+            if (result.Contains("."))
+            {
+                string[] parts = result.Split('.');
+                if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+                {
+                    if (parts[1].Length > 2 || parts.Length > 2)
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
+            else if (result.Contains(","))
+            {
+                string[] parts = result.Split(',');
+                if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+                {
+                    if (parts[1].Length > 2 || parts.Length > 2)
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         private void tb_SalePrice_KeyPress(object sender, KeyPressEventArgs e)
@@ -98,6 +140,34 @@ namespace MarketManagment.ProductForms.Popups
             {
                 e.Handled = true;
             }
+
+            // only allow 2 decimal
+            int cursorPosLeft = tb_SalePrice.SelectionStart;
+            int cursorPosRight = tb_SalePrice.SelectionStart + tb_SalePrice.SelectionLength;
+            string result = tb_SalePrice.Text.Substring(0, cursorPosLeft) + e.KeyChar + tb_SalePrice.Text.Substring(cursorPosRight);
+
+            if (result.Contains("."))
+            {
+                string[] parts = result.Split('.');
+                if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+                {
+                    if (parts[1].Length > 2 || parts.Length > 2)
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
+            else if (result.Contains(","))
+            {
+                string[] parts = result.Split(',');
+                if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+                {
+                    if (parts[1].Length > 2 || parts.Length > 2)
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         private void tb_Barcode_KeyPress(object sender, KeyPressEventArgs e)
@@ -106,6 +176,38 @@ namespace MarketManagment.ProductForms.Popups
             {
                 e.Handled = true;
             }
+        }
+
+        private void tb_Barcode_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (string.IsNullOrEmpty(tb_Barcode.Text))
+            {
+                tb_Name.Clear();
+                tb_SalePrice.Clear();
+                tb_BuyPrice.Clear();
+                cb_IsWeight.Checked = false;
+                return;
+            }
+
+            _checkedBarcode = Convert.ToInt32(tb_Barcode.Text);
+            if (!DBHelper.CheckDataValid(_checkedBarcode))
+            {
+                tb_Name.Clear();
+                tb_SalePrice.Clear();
+                tb_BuyPrice.Clear();
+                cb_IsWeight.Checked = false;
+                return;
+            }
+
+            string productName = DBHelper.GetProductName(_checkedBarcode);
+            double salePrice = DBHelper.GetProductPrice(_checkedBarcode);
+            double buyPrice = DBHelper.GetProductBuyPrice(_checkedBarcode);
+            bool isWeight = DBHelper.GetProductIsWeight(_checkedBarcode);
+
+            tb_Name.Text = productName;
+            tb_SalePrice.Text = salePrice.ToString();
+            tb_BuyPrice.Text = buyPrice.ToString();
+            cb_IsWeight.Checked = isWeight;
         }
     }
 }

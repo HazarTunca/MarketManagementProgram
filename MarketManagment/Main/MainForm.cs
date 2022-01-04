@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarketManagment.Main
+namespace MarketManagement.Main
 {
     public partial class MainForm : Form
     {

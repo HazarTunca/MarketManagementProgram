@@ -7,13 +7,14 @@ using System.Data.SQLite;
 using System.IO;
 using System.Windows.Forms;
 
-namespace MarketManagment.Main
+namespace MarketManagement.Main
 {
     class DBHelper
     {
-        private static string _folder = Application.StartupPath + "Database";
-        private static string _filePath = Application.StartupPath + "Database\\MarketManagement.db";
-        private static string _cs = @"URI=file:" + Application.StartupPath + "Database\\MarketManagement.db";
+        public static DirectoryInfo dir = Directory.GetParent(Application.UserAppDataPath);
+        private static string _folder = Path.Combine(dir.FullName, "Veritabanı");
+        private static string _filePath = Path.Combine(dir.FullName, "Veritabanı\\MarketSaleDB.db");
+        private static string _cs = @"URI=file:" + Path.Combine(dir.FullName, "Veritabanı\\MarketSaleDB.db");
 
         // connnection string getter
         public static string ConnectionString { get => _cs; }
@@ -34,12 +35,23 @@ namespace MarketManagment.Main
 
                 if (isBarcodeExist == 0)
                 {
-                    cmd.CommandText = "insert into Products(barcode, name, buyPrice, salePrice, isWeight) VALUES(@Barcode, @Name, @BuyPrice, @SalePrice, @IsWeight)";
+                    cmd.CommandText = "insert into Products(barcode, name, salePrice, buyPrice, profit, isWeight) VALUES(@Barcode, @Name, @SalePrice, @BuyPrice, @Profit, @IsWeight)";
 
                     cmd.Parameters.AddWithValue("@Barcode", barcode);
                     cmd.Parameters.AddWithValue("@Name", name);
-                    cmd.Parameters.AddWithValue("@BuyPrice", buyPrice);
-                    cmd.Parameters.AddWithValue("@SalePrice", salePrice);
+
+                    // convert buyPrice
+                    string buyPriceString = "--";
+                    if (buyPrice != 0) buyPriceString = $"{buyPrice.ToString("#.00")} ₺";
+                    cmd.Parameters.AddWithValue("@BuyPrice", buyPriceString);
+
+                    cmd.Parameters.AddWithValue("@SalePrice", $"{salePrice.ToString("#.00")} ₺");
+
+                    // calculate the profit
+                    string profit = "--";
+                    if (buyPrice != 0) profit = $"{(salePrice - buyPrice).ToString("#.00")} ₺  (%{((salePrice - buyPrice) * 100 / buyPrice).ToString("#.00")})";
+                    cmd.Parameters.AddWithValue("@Profit", profit);
+
                     cmd.Parameters.AddWithValue("@IsWeight", isWeight);
                 }
                 else
@@ -55,22 +67,36 @@ namespace MarketManagment.Main
                 System.Diagnostics.Debug.WriteLine("\n\nCannot insert! " + e);
                 return;
             }
+            
+            con.Close();
         }
 
         public static void UpdateData(int barcode, string name, double buyPrice, double salePrice, bool isWeight)
         {
-            string sql = "update Products set name = @Name, buyPrice = @BuyPrice, salePrice = @SalePrice, isWeight = @IsWeight where barcode = @Barcode";
+            string sql = "update Products set name = @Name, salePrice = @SalePrice, buyPrice = @BuyPrice, profit = @Profit, isWeight = @IsWeight where barcode = @Barcode";
             SQLiteConnection con = new SQLiteConnection(_cs);
             con.Open();
 
             SQLiteCommand cmd = new SQLiteCommand(sql, con);
             cmd.Parameters.AddWithValue("@Barcode", barcode);
             cmd.Parameters.AddWithValue("@Name", name);
-            cmd.Parameters.AddWithValue("@BuyPrice", buyPrice);
-            cmd.Parameters.AddWithValue("@SalePrice", salePrice);
+
+            // convert buyPrice
+            string buyPriceString = "--";
+            if (buyPrice != 0) buyPriceString = $"{buyPrice.ToString("#.00")} ₺";
+            cmd.Parameters.AddWithValue("@BuyPrice", buyPriceString);
+
+            cmd.Parameters.AddWithValue("@SalePrice", $"{salePrice.ToString("#.00")} ₺");
+
+            // calculate the profit
+            string profit = "--";
+            if(buyPrice != 0) profit = $"{(salePrice - buyPrice).ToString("#.00")} ₺  (%{((salePrice - buyPrice) * 100 / buyPrice).ToString("#.00")})";
+            cmd.Parameters.AddWithValue("@Profit", profit);
+
             cmd.Parameters.AddWithValue("@IsWeight", isWeight);
 
             cmd.ExecuteNonQuery();
+            con.Close();
         }
 
         public static void DeleteData(int barcode)
@@ -82,6 +108,8 @@ namespace MarketManagment.Main
             SQLiteCommand cmd = new SQLiteCommand(sql, con);
             cmd.Parameters.AddWithValue("@Barcode", barcode);
             cmd.ExecuteNonQuery();
+
+            con.Close();
         }
 
         public static bool CheckDataValid(int barcode)
@@ -95,6 +123,7 @@ namespace MarketManagment.Main
             checkBarcodeExist.Parameters.AddWithValue("@Barcode", barcode);
             int isBarcodeExist = Convert.ToInt32(checkBarcodeExist.ExecuteScalar());
 
+            con.Close();
             if (isBarcodeExist == 0)
             {
                 return false;
@@ -115,7 +144,7 @@ namespace MarketManagment.Main
             cmd.Parameters.AddWithValue("@Barcode", barcode);
 
             string productName = (string)cmd.ExecuteScalar();
-
+            con.Close();
             return productName;
         }
 
@@ -128,12 +157,36 @@ namespace MarketManagment.Main
             SQLiteCommand cmd = new SQLiteCommand(sql, con);
             cmd.Parameters.AddWithValue("@Barcode", barcode);
 
-            double productPrice = (double)cmd.ExecuteScalar();
+            string productPriceString = (string)cmd.ExecuteScalar();
+            productPriceString = productPriceString.Trim('₺');
 
+            double productPrice = 0;
+            if(productPriceString != "--") productPrice = double.Parse(productPriceString);
+
+            con.Close();
             return productPrice;
         }
 
-        public static bool ProductIsWeight(int barcode)
+        public static double GetProductBuyPrice(int barcode)
+        {
+            string sql = "select buyPrice from Products where barcode = @Barcode";
+            SQLiteConnection con = new SQLiteConnection(_cs);
+            con.Open();
+
+            SQLiteCommand cmd = new SQLiteCommand(sql, con);
+            cmd.Parameters.AddWithValue("@Barcode", barcode);
+
+            string productBuyPriceString = (string)cmd.ExecuteScalar();
+            productBuyPriceString = productBuyPriceString.Trim('₺');
+
+            double productBuyPrice = 0;
+            if (productBuyPriceString != "--") productBuyPrice = double.Parse(productBuyPriceString);
+
+            con.Close();
+            return productBuyPrice;
+        }
+
+        public static bool GetProductIsWeight(int barcode)
         {
             string sql = "select isWeight from Products where barcode = @Barcode";
             SQLiteConnection con = new SQLiteConnection(_cs);
@@ -146,6 +199,8 @@ namespace MarketManagment.Main
 
             int weightInt = int.Parse(weightStr);
             bool isWeight = Convert.ToBoolean(weightInt);
+
+            con.Close();
             return isWeight;
         }
 
@@ -162,9 +217,10 @@ namespace MarketManagment.Main
                 using (var sqlite = new SQLiteConnection(@"Data Source=" + _filePath))
                 {
                     sqlite.Open();
-                    string sql = "create table Products(barcode INTEGER not null, name text not null, buyPrice REAL, salePrice REAL not null, isWeight INTEGER, primary key(barcode))";
+                    string sql = "create table Products(barcode INTEGER not null, name text not null, salePrice text not null, buyPrice text, profit text, isWeight INTEGER, primary key(barcode))";
                     SQLiteCommand sqlCmd = new SQLiteCommand(sql, sqlite);
                     sqlCmd.ExecuteNonQuery();
+                    sqlite.Close();
                 }
             }
         }

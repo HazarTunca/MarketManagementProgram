@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarketManagment.SaleForms.Popups
+namespace MarketManagement.SaleForms.Popups
 {
     public partial class AskAmountPopupForm : Form
     {

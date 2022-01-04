@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarketManagment.SaleForms.Popups
+namespace MarketManagement.SaleForms.Popups
 {
     public partial class RemoveFromListWeightPopupForm : Form
     {
@@ -44,7 +44,6 @@ namespace MarketManagment.SaleForms.Popups
             this.Close();
         }
 
-
         private void btn_RemoveAll_Click(object sender, EventArgs e)
         {
             _saleForm.RemoveProductFromList(_barcode, _itemWeight);
@@ -68,6 +67,34 @@ namespace MarketManagment.SaleForms.Popups
             if ((e.KeyChar == '.' || e.KeyChar == ',') && ((sender as TextBox).Text.IndexOf('.') > -1 || (sender as TextBox).Text.IndexOf(',') > -1))
             {
                 e.Handled = true;
+            }
+
+            // only allow 2 decimal
+            int cursorPosLeft = tb_Unit.SelectionStart;
+            int cursorPosRight = tb_Unit.SelectionStart + tb_Unit.SelectionLength;
+            string result = tb_Unit.Text.Substring(0, cursorPosLeft) + e.KeyChar + tb_Unit.Text.Substring(cursorPosRight);
+
+            if (result.Contains("."))
+            {
+                string[] parts = result.Split('.');
+                if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+                {
+                    if (parts[1].Length > 2 || parts.Length > 2)
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
+            else if (result.Contains(","))
+            {
+                string[] parts = result.Split(',');
+                if (parts.Length > 1 && e.KeyChar != (char)Keys.Back)
+                {
+                    if (parts[1].Length > 2 || parts.Length > 2)
+                    {
+                        e.Handled = true;
+                    }
+                }
             }
         }
     }

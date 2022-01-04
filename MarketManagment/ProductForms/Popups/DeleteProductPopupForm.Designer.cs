@@ -1,5 +1,5 @@
 ﻿
-namespace MarketManagment.ProductForms.Popups
+namespace MarketManagement.ProductForms.Popups
 {
     partial class DeleteProductPopupForm
     {

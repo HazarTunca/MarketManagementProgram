@@ -1,5 +1,5 @@
 ﻿
-namespace MarketManagment.SaleForms.Popups
+namespace MarketManagement.SaleForms.Popups
 {
     partial class RemoveFromListWeightPopupForm
     {

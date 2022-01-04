@@ -1,5 +1,5 @@
 ﻿
-namespace MarketManagment.ProductForms.Popups
+namespace MarketManagement.ProductForms.Popups
 {
     partial class UpdateProductPopupForm
     {
@@ -58,6 +58,7 @@ namespace MarketManagment.ProductForms.Popups
             this.tb_Barcode.Size = new System.Drawing.Size(154, 20);
             this.tb_Barcode.TabIndex = 1;
             this.tb_Barcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_Barcode_KeyPress);
+            this.tb_Barcode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tb_Barcode_KeyUp);
             // 
             // tb_Name
             // 

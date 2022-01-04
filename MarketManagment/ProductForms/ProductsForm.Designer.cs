@@ -1,5 +1,5 @@
 ﻿
-namespace MarketManagment.ProductForms
+namespace MarketManagement.ProductForms
 {
     partial class ProductsForm
     {
@@ -61,8 +61,13 @@ namespace MarketManagment.ProductForms
             // 
             // dgv_Products
             // 
+            this.dgv_Products.AllowUserToAddRows = false;
+            this.dgv_Products.AllowUserToDeleteRows = false;
+            this.dgv_Products.AllowUserToResizeColumns = false;
+            this.dgv_Products.AllowUserToResizeRows = false;
             this.dgv_Products.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_Products.Location = new System.Drawing.Point(12, 58);
+            this.dgv_Products.MultiSelect = false;
             this.dgv_Products.Name = "dgv_Products";
             this.dgv_Products.ReadOnly = true;
             this.dgv_Products.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -122,6 +127,8 @@ namespace MarketManagment.ProductForms
             this.Controls.Add(this.btn_Back);
             this.Name = "ProductsForm";
             this.Text = "ProductsForm";
+            this.Load += new System.EventHandler(this.ProductsForm_Load);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ProductsForm_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Products)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

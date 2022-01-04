@@ -1,5 +1,5 @@
 ﻿
-namespace MarketManagment.Main
+namespace MarketManagement.Main
 {
     partial class MainForm
     {
