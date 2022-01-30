@@ -1,2 +1,2 @@
 # MarketManagementProgram
- Market management program for our market
+ Market management program, includes local database (sqlite)
